@@ -23,3 +23,8 @@ function view($path, $attributes = []) {
   extract($attributes);
   require BASE_PATH . "views/{$path}.view.php";
 }
+
+function abort($code = 404) {
+  http_response_code($code);
+  require view($code);
+}
