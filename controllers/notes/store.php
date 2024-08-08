@@ -1,16 +1,19 @@
-<?php 
+<?php
 
 use Core\Database;
+use Core\App;
 
 require basePath('Core/Validator.php');
 
-$config = require basePath('config.php');
-$db = new Database($config);
+$db = App::resolve(Database::class);
+
 $currentUser = 1;
 
 $body = trim($_POST['body']);
 
-if (! Validator::string($body, 1, 1000)) $errors = ['body' => 'The body can not be empty and can not exceeds 1000 character'];
+if (!Validator::string($body, 1, 1000)) {
+  $errors = ['body' => 'The body can not be empty and can not exceeds 1000 character'];
+}
 
 if (empty($errors)) {
   $note = $db->query('INSERT INTO notes(body, user_id) VALUES (:body, :user_id)', [
@@ -19,6 +22,6 @@ if (empty($errors)) {
   ]);
 }
 
-header('Location: /notes' );
+header('Location: /notes');
 exit();
 
